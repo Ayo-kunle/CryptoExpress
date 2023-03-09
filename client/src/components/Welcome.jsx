@@ -70,14 +70,14 @@ const Welcome = () => {
             </div>
             <div className={companyCommonStyles}>Encryption</div>
             <div className={`sm:rounded-tr-2xl ${companyCommonStyles}`}>
-              Sccmart Contract Platform
+              Smart Contract Platform
             </div>
             <div className={`sm:rounded-bl-2xl ${companyCommonStyles}`}>
               Blockchain Web
             </div>
             <div className={companyCommonStyles}>Affordability</div>
             <div className={`rounded-br-2xl ${companyCommonStyles}`}>
-              Decentralized database
+              Decentralized Database
             </div>
           </div>
         </div>
