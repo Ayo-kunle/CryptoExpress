@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 
+import "react-toastify/dist/ReactToastify.css";
+
 import { TransactionContext } from "../context/TransactionContext";
 import { Loader } from ".";
 import { shortenAddress } from "../utils/shortenAddress";
+import { ToastContainer, toast } from "react-toastify";
 
 const companyCommonStyles =
   "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
@@ -29,21 +32,41 @@ const Welcome = () => {
     sendTransaction,
     handleChange,
   } = useContext(TransactionContext);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     const { addressTo, amount, keyword, message } = formData;
 
     e.preventDefault();
 
     if (!addressTo || !amount || !keyword || !message) return;
 
-    sendTransaction();
+    const response = await sendTransaction();
+    if (response.status === "success") {
+      setLoading(false);
+      toast("Transaction Successful");
+    }
   };
 
   return (
     <div className="flex w-full justify-center items-center">
       <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
         <div className="flex flex-1 justify-start items-start flex-col mf:mr-10">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          {/* Same as */}
+          <ToastContainer />
           <h1 className="text-3xl sm:text-5xl text-white text-gradient py-1">
             Transfer digital <br /> assets globally
           </h1>
@@ -64,20 +87,60 @@ const Welcome = () => {
             </button>
           )}
 
-          <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
-            <div className={`rounded-tl-2xl ${companyCommonStyles}`}>
-              Dependability
-            </div>
-            <div className={companyCommonStyles}>Encryption</div>
-            <div className={`sm:rounded-tr-2xl ${companyCommonStyles}`}>
-              Smart Contract Platform
-            </div>
-            <div className={`sm:rounded-bl-2xl ${companyCommonStyles}`}>
-              Blockchain Web
-            </div>
-            <div className={companyCommonStyles}>Affordability</div>
-            <div className={`rounded-br-2xl ${companyCommonStyles}`}>
-              Decentralized Database
+          <div className="bg-purple-200 rounded-lg py-4 px-2">
+            <div className="max-w-screen-md mx-auto grid grid-cols-3 gap-4">
+              <div className="bg-red-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-yellow-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Dependability
+                </h2>
+                <p className="text-sm text-white">
+                  We value reliability and trustworthiness in our products.
+                </p>
+              </div>
+              <div className="bg-yellow-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-red-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Encryption
+                </h2>
+                <p className="text-sm text-white">
+                  We prioritize data privacy and security through strong
+                  encryption methods.
+                </p>
+              </div>
+              <div className="bg-pink-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-green-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Smart Contracts
+                </h2>
+                <p className="text-sm text-white">
+                  Our platform allows for secure, automated transactions with
+                  smart contracts.
+                </p>
+              </div>
+              <div className="bg-green-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-pink-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Blockchain Web
+                </h2>
+                <p className="text-sm text-white">
+                  Experience seamless and decentralized web applications with
+                  blockchain technology.
+                </p>
+              </div>
+              <div className="bg-blue-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-orange-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Affordability
+                </h2>
+                <p className="text-sm text-white">
+                  We believe in making cutting-edge technology accessible and
+                  affordable for everyone.
+                </p>
+              </div>
+              <div className="bg-orange-300 shadow-lg rounded-lg p-4 flex flex-col justify-center items-center transition-all duration-300 hover:bg-blue-300">
+                <h2 className="text-lg font-bold mb-2 text-white">
+                  Decentralized Database
+                </h2>
+                <p className="text-sm text-white">
+                  Securely store and access data on our decentralized database.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -133,11 +196,12 @@ const Welcome = () => {
               <Loader />
             ) : (
               <button
+                disabled={loading ? true : false}
                 type="button"
                 onClick={handleSubmit}
                 className="text-white w-full mt-2 border-[1px] p-2 border-green-600 hover:bg-[#3d4f7c] rounded-full cursor-pointer"
               >
-                Send now
+                {loading ? "loading..." : "Send now"}
               </button>
             )}
           </div>
