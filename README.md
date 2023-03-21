@@ -13,3 +13,6 @@ function getAllTransfers() public view returns (Transaction[] memory): A functio
 function getTransferCount() public view returns (uint256): A function that returns the total number of transactions recorded.
 License
 This contract is released under the UNLICENSED SPDX-License-Identifier.
+
+Smart contract address : 0xE5B53f0285521323540375Bbc1931C2Ad081114f
+Network : Goerli
